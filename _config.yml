@@ -1,4 +1,4 @@
-remote_theme: zig-by-example/theme
+remote_theme: zig-by-example/just-the-docs
 logo: /assets/zig.png
 title: Zig By Example
 description: Learn Zig, by example
