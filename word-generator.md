@@ -1,5 +1,5 @@
 # 2 - Word Generator
-we’ll build a **Word Generator**. that gives terminal argumants and generates random words like this:
+we’ll build a **Word Generator**. that generates random words by the terminal arguments.
 ```php
 $ ./wg 5 4 # <letters count> <words count>
 lazob
