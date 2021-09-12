@@ -11,11 +11,11 @@ pub fn main() anyerror!void {
     // init server
     // if `reuse_address` not modifyed to `true` you should wait after running program
     // for more information read http://unixguide.net/network/socketfaq/4.5.shtml
-    var stream = StreamServer.init(Options{ .reuse_address = true });
+    var server = StreamServer.init(Options{ .reuse_address = true });
 
-    defer stream.deinit();
+    defer server.deinit();
 
-    try stream.listen(address); // start listening server
+    try server.listen(address); // start listening server
 
     // accepting connections
     while (true) {
