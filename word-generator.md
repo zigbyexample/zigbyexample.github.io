@@ -47,11 +47,13 @@ const WordGenerator = struct {
         var rand_engine = DefaultPrng.init(@intCast(u64, std.time.milliTimestamp())).random;
 
         var list = ArrayList([]u8).init(self.allocator); // init list
+        defer list.deinit(); // deinit
 
         while (self.word_count > 0) : (self.word_count -= 1) {
             var lc: usize = 0; // letters count
             var prev_letter: u8 = 0; // previus letter to check is_regular_letter
             var word = ArrayList(u8).init(self.allocator);
+            defer word.deinit(); // deinit
             while (lc < self.letter_count) {
                 // generate a random letter
                 const letter = rand_engine.intRangeLessThanBiased(u7, alpha_start, alpha_end);
@@ -66,9 +68,9 @@ const WordGenerator = struct {
             }
 
             // append word
-            list.append(word.items) catch return null;
+            list.append(word.toOwnedSlice()) catch return null;
         }
-        return list.items;
+        return list.toOwnedSlice();
     }
 };
 
