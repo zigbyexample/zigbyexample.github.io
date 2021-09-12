@@ -8,7 +8,7 @@ qeuom
 fated
 ```
 
-word-generator.zig:
+[word-generator.zig](/code/word-generator.zig):
 ```zig
 const std = @import("std");
 const parseUnsigned = std.fmt.parseUnsigned;
