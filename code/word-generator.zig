@@ -30,7 +30,6 @@ const WordGenerator = struct {
     }
 
     pub fn generate(self: *WordGenerator) ?[][]u8 {
-
         // randomizer engine. generates a new random number millisecond
         var rand_engine = DefaultPrng.init(@intCast(u64, std.time.milliTimestamp())).random;
 

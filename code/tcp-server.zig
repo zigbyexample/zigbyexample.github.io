@@ -19,7 +19,7 @@ pub fn main() anyerror!void {
 
     // accepting connections
     while (true) {
-        const conn = try stream.accept();
+        const conn = try server.accept();
         defer conn.stream.close();
 
         var buf : [4096]u8 = undefined;
