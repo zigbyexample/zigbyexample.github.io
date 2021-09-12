@@ -1,4 +1,7 @@
-[tcp-server.zig](/code/tcp-server.zig):
+# 3 - TCP Server
+TCP is the most common internet protocol suite.
+we most create a TCP socket ( in Zig it's called `StreamServer`), then we listen on our address and accepting client connections
+[tcp-server.zig](/code/tcp-server.zig)
 ```zig
 const std = @import("std");
 const StreamServer = std.net.StreamServer;
@@ -13,11 +16,11 @@ pub fn main() anyerror!void {
     // init server
     // if `reuse_address` not modifyed to `true` you should wait after running program
     // for more information read http://unixguide.net/network/socketfaq/4.5.shtml
-    var stream = StreamServer.init(Options{ .reuse_address = true });
+    var server = StreamServer.init(Options{ .reuse_address = true });
 
-    defer stream.deinit();
+    defer server.deinit();
 
-    try stream.listen(address); // start listening server
+    try server.listen(address); // start listening server
 
     // accepting connections
     while (true) {
