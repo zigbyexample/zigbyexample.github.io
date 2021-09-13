@@ -1,6 +1,6 @@
-# 3 - TCP Server
+# 2 - TCP Server
 TCP is the most common internet protocol suite.
-we most create a TCP socket ( in Zig it's called `StreamServer`), then we listen on our address and accepting client connections
+We will create a TCP socket (using the built-in `StreamServer`), and listen on the address and accept all incoming client connections.
 
 [tcp-server.zig](/code/tcp-server.zig)
 ```zig
