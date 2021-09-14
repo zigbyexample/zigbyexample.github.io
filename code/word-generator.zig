@@ -11,17 +11,14 @@ fn generateWords(allocator: *Allocator, word_count: usize, letter_count: usize) 
     // Randomizer engine: generates a new random number
     var rand_engine = DefaultPrng.init(@intCast(u64, std.time.milliTimestamp())).random; // std.time.milliTimestamp() is the seed
 
-    var list = ArrayList([]u8).init(allocator); // List of words
-    defer list.deinit();
-
     var wc: usize = 0;
     while (wc < word_count) : (wc += 1) {
         var word = ArrayList(u8).init(allocator); // The word: list of letters
         defer word.deinit();
 
-        var prev_letter: u8 = 0; // Previus letter
+        var prev_letter: u8 = 0; // Previous letter
 
-        var lc: usize = 0; // letters count
+        var lc: usize = 0; // Letter count
         while (lc < letter_count) {
             // Generate a random letter
             const letter = rand_engine.intRangeLessThanBiased(u7, 'a', 'z');
@@ -35,26 +32,17 @@ fn generateWords(allocator: *Allocator, word_count: usize, letter_count: usize) 
             lc += 1;
         }
 
-        // Append word
-        try list.append(word.toOwnedSlice());
+        // Print the word
+        print("{s}\n", .{word.items});
         word.deinit();
-    }
-
-    for (list.items) |item| {
-        print("{s}\n", .{item});
     }
 }
 
 pub fn main() anyerror!void {
     // Init allocator
-    var arena = ArenaAllocator.init(page_allocator);
+    var arena = ArenaAllocator.init(std.heap.page_allocator);
     const allocator = &arena.allocator;
-
-    // Free memory
-    defer {
-        process.argsFree(allocator, args);
-        arena.deinit();
-    }
+    defer arena.deinit();
 
     // Set initial words and letters count
     var letter_count: usize = 5;
@@ -62,7 +50,7 @@ pub fn main() anyerror!void {
 
     // Get arguments
     const args = try process.argsAlloc(allocator);
-    defer allocator.free(args);
+    defer process.argsFree(allocator, args);
 
     // Check for arguments
     for (args) |arg, i| {
