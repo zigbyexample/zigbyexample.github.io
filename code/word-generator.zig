@@ -58,7 +58,7 @@ pub fn main() anyerror!void {
             letter_count = try parseUnsigned(usize, arg, 0);
         } else if (i == 2) {
             word_count = try parseUnsigned(usize, arg, 0);
-        } else break;
+        }
     }
 
     try generateWords(allocator, word_count, letter_count);
