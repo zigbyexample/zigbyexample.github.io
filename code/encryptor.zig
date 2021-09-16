@@ -6,12 +6,11 @@ const Md5 = std.crypto.hash.Md5;
 const ArenaAllocator = std.heap.ArenaAllocator;
 
 pub fn main() !void {
-    var input: []u8 = undefined;
-    var output: [Md5.digest_length]u8 = undefined;
-    // Init allocator
+    // Initialize allocator
     var arena = ArenaAllocator.init(std.heap.page_allocator);
     const allocator = &arena.allocator;
     defer arena.deinit();
+    
     // Get arguments
     const args = try process.argsAlloc(allocator);
     defer process.argsFree(allocator, args);
@@ -22,9 +21,10 @@ pub fn main() !void {
         return;
     }
 
-    input = args[1];
+    var input = args[1]; // hash input from first argument
+    var output: [Md5.digest_length]u8 = undefined; // this will be hash result
 
-    // hash
+    // hashing...
     Md5.hash(input, &output, .{});
 
     // print
