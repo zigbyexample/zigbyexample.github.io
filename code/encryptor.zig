@@ -2,18 +2,13 @@ const std = @import("std");
 const fmtSliceHexLower = std.fmt.fmtSliceHexLower;
 const process = std.process;
 const print = std.debug.print;
+const page_allocator = std.heap.page_allocator;
 const Md5 = std.crypto.hash.Md5;
-const ArenaAllocator = std.heap.ArenaAllocator;
 
 pub fn main() !void {
-    // Initialize allocator
-    var arena = ArenaAllocator.init(std.heap.page_allocator);
-    const allocator = &arena.allocator;
-    defer arena.deinit();
-    
     // Get arguments
-    const args = try process.argsAlloc(allocator);
-    defer process.argsFree(allocator, args);
+    const args = try process.argsAlloc(page_allocator);
+    defer process.argsFree(page_allocator, args);
 
     // Check for arguments
     if (args.len < 2) {
