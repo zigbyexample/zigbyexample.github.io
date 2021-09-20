@@ -32,3 +32,9 @@
 *.app
 
 zig-cache/
+encryptor
+ls
+shell
+word-generator
+subprocess
+tcp-server

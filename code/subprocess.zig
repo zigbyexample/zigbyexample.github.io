@@ -1,16 +1,13 @@
 const std = @import("std");
 const ChildProcess = std.ChildProcess;
-const GeneralPurposeAllocator = std.heap.GeneralPurposeAllocator;
+const page_allocator = std.heap.page_allocator;
 const tagName = std.meta.tagName;
 
 pub fn main() anyerror!void {
-  var gpa = GeneralPurposeAllocator(.{}){};
-  var allocator = &gpa.allocator;
-  defer _= gpa.deinit();
+  const args = [_][]const u8{ "ls", "-al" }; // equals to : ls -al
 
-  const args = [_][]const u8{ "ls", "-al" };
-
-  var process = try ChildProcess.init(&args, allocator);
+  // Initialize process
+  var process = try ChildProcess.init(&args, page_allocator);
   defer process.deinit();
 
   std.debug.print("Running command: {s}\n", .{args});

@@ -1,7 +1,7 @@
 const std = @import("std");
 const parseUnsigned = std.fmt.parseUnsigned;
 const process = std.process;
-const print = std.debug.print;
+const print = std.io.getStdOut().writer().print;
 const DefaultPrng = std.rand.DefaultPrng;
 const ArenaAllocator = std.heap.ArenaAllocator;
 const Allocator = std.mem.Allocator;
@@ -33,7 +33,7 @@ fn generateWords(allocator: *Allocator, word_count: usize, letter_count: usize) 
         }
 
         // Print the word
-        print("{s}\n", .{word.items});
+        try print("{s}\n", .{word.items});
         word.deinit();
     }
 }

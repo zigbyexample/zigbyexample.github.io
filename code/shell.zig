@@ -1,10 +1,9 @@
 const std = @import("std");
 const mem = std.mem;
-const stdin = std.io.getStdIn().reader();
-const stderr = std.io.getStdOut().writer();
+const readUntilDelimiterOrEof = std.io.getStdIn().reader().readUntilDelimiterOrEof;
+const stdout = std.io.getStdOut().writer();
 const exit = std.process.exit;
-const childProcess = std.ChildProcess;
-const FileNotFound = childProcess.SpawnError.FileNotFound;
+const ChildProcess = std.ChildProcess;
 const ArrayList = std.ArrayList;
 
 const Error = error{
@@ -14,10 +13,13 @@ const Error = error{
     EmptyCommand,
 };
 
+// split arguments by white space
 fn get_args(cmd: []const u8) !?[]const []const u8 {
     if (cmd.len == 0) {
         return null;
     }
+
+    // convert iterator to an array of strings
     var args = ArrayList([]const u8).init(std.heap.page_allocator);
     defer args.deinit();
     var splits = mem.split(u8, cmd, " ");
@@ -27,40 +29,45 @@ fn get_args(cmd: []const u8) !?[]const []const u8 {
     return args.toOwnedSlice();
 }
 
-fn evulate_cmd(args: []const []const u8) Error!void {
+// evulate commands
+fn evulate_cmd(args: []const []const u8) !void {
     if (args.len == 0) {
         return Error.EmptyCommand;
-    } else if (mem.eql(u8, args[0], "clear")) {
-        stderr.writeAll("\x1b[1;1H\x1b[2J") catch return Error.ClearFailed;
+    }
+    // `clear` and `exit` are builtin commands
+    else if (mem.eql(u8, args[0], "clear")) {
+        stdout.writeAll("\x1b[1;1H\x1b[2J") catch return Error.ClearFailed;
     } else if (mem.eql(u8, args[0], "exit")) {
         exit(0);
     } else {
-        const res = childProcess.exec(.{ .allocator = std.heap.page_allocator, .argv = args }) catch |err| {
+        // execute command
+        const res = ChildProcess.exec(.{ .allocator = std.heap.page_allocator, .argv = args }) catch |err| {
             switch (err) {
-                FileNotFound => return Error.UnkownCommand,
+                ChildProcess.SpawnError.FileNotFound => return Error.UnkownCommand,
                 else => {
-                    stderr.writeAll(@errorName(err)) catch {};
+                    try stdout.writeAll(@errorName(err));
                     return Error.CommandFailed;
                 },
             }
         };
-        stderr.writeAll(res.stdout) catch {};
+        // write output
+        try stdout.writeAll(res.stdout);
     }
 }
 
 pub fn main() !void {
-    var repl_buf: [1024]u8 = undefined;
+    var cmd_buf: [1024]u8 = undefined;
     while (true) {
-        try stderr.writeAll("\x1b[92;1m$ \x1b[0m");
-        if (stdin.readUntilDelimiterOrEof(&repl_buf, '\n') catch |err| {
-            try stderr.print("\nUnable to parse command: {s}\n", .{@errorName(err)});
+        try stdout.writeAll("\x1b[92;1m$ \x1b[0m"); // $
+        if (readUntilDelimiterOrEof(&cmd_buf, '\n') catch |err| {
+            try stdout.print("Unable to parse command: {s}\n", .{@errorName(err)});
             continue;
         }) |line| {
-            const actual_line = mem.trimRight(u8, line, "\r\n ");
+            const actual_line = mem.trim(u8, line, "\r\n ");
             if (try get_args(actual_line)) |args| {
                 evulate_cmd(args) catch |err| {
                     if (err == Error.UnkownCommand) {
-                        stderr.print("Unkown Command `{s}`\n", .{actual_line}) catch {};
+                        stdout.print("Unkown Command `{s}`\n", .{actual_line}) catch {};
                     } else {
                         return err;
                     }
