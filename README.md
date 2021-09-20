@@ -5,3 +5,5 @@ This is for all those people who love to learn by code, rather than trying to de
 
 - [Random Word Generator](/word-generator.md)
 - [TCP Server](/tcp-server.md)
+- [List Directory](/list-directory.md)
+- [Subprocess](/subprocess.md)
