@@ -1,25 +1,24 @@
 const std = @import("std");
-const parseUnsigned = std.fmt.parseUnsigned;
-const process = std.process;
-const print = std.io.getStdOut().writer().print;
-const DefaultPrng = std.rand.DefaultPrng;
-const ArenaAllocator = std.heap.ArenaAllocator;
-const Allocator = std.mem.Allocator;
-const ArrayList = std.ArrayList;
+const stdout = std.io.getStdOut().writer();
 
-fn generateWords(allocator: *Allocator, word_count: usize, letter_count: usize) !void {
+fn generateWords(allocator: *std.mem.Allocator, word_len: usize, letter_len: usize) !void {
     // Randomizer engine: generates a new random number
-    var rand_engine = DefaultPrng.init(@intCast(u64, std.time.milliTimestamp())).random; // std.time.milliTimestamp() is the seed
+    const rand_engine = std.rand.DefaultPrng.init(@intCast(u64, std.time.milliTimestamp())).random(); // std.time.milliTimestamp() is the seed
 
-    var wc: usize = 0;
-    while (wc < word_count) : (wc += 1) {
-        var word = ArrayList(u8).init(allocator); // The word: list of letters
-        defer word.deinit();
+    // Word Index
+    var wl: usize = 0;
 
-        var prev_letter: u8 = 0; // Previous letter
+    // allocate word
+    var word = try allocator.alloc(u8, letter_len); // The word: list of letters
+    defer allocator.free(word);
+    while (wl < word_len) : (wl += 1) {
+        // Previous letter
+        var prev_letter: u8 = 0;
 
-        var lc: usize = 0; // Letter count
-        while (lc < letter_count) {
+        // Letter index
+        var li: usize = 0;
+
+        while (li < letter_len) {
             // Generate a random letter
             const letter = rand_engine.intRangeLessThanBiased(u7, 'a', 'z');
 
@@ -27,39 +26,35 @@ fn generateWords(allocator: *Allocator, word_count: usize, letter_count: usize) 
             if (prev_letter == letter)
                 continue;
 
-            try word.append(letter); // Append letter to word
+            word[li] = letter; // Append letter to word
             prev_letter = letter;
-            lc += 1;
+            li += 1;
         }
 
         // Print the word
-        try print("{s}\n", .{word.items});
-        word.deinit();
+        try stdout.print("{s}\n", .{word});
     }
 }
 
 pub fn main() anyerror!void {
-    // Init allocator
-    var arena = ArenaAllocator.init(std.heap.page_allocator);
-    const allocator = &arena.allocator;
-    defer arena.deinit();
+    const allocator = std.testing.allocator;
 
-    // Set initial words and letters count
-    var letter_count: usize = 5;
-    var word_count: usize = 5;
+    // Init words and letters count
+    var letter_len: usize = 5;
+    var word_len: usize = 5;
 
     // Get arguments
-    const args = try process.argsAlloc(allocator);
-    defer process.argsFree(allocator, args);
+    const args = try std.process.argsAlloc(allocator);
+    defer std.process.argsFree(allocator, args);
 
     // Check for arguments
-    for (args) |arg, i| {
-        if (i == 1) {
-            letter_count = try parseUnsigned(usize, arg, 0);
-        } else if (i == 2) {
-            word_count = try parseUnsigned(usize, arg, 0);
-        }
+    for (args[1..]) |arg, i| {
+        const count = try std.fmt.parseUnsigned(usize, arg, 0);
+        if (i == 1)
+            letter_len = count
+        else if (i == 2)
+            word_len = count;
     }
 
-    try generateWords(allocator, word_count, letter_count);
+    try generateWords(allocator, word_len, letter_len);
 }

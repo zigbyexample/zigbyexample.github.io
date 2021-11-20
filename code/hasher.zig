@@ -1,14 +1,11 @@
 const std = @import("std");
-const fmtSliceHexLower = std.fmt.fmtSliceHexLower;
-const process = std.process;
 const stdout = std.io.getStdOut().writer();
-const page_allocator = std.heap.page_allocator;
-const Blake3 = std.crypto.hash.Blake3;
+const hash = std.crypto.hash;
 
 pub fn main() !void {
     // Get Arguments
-    const args = try process.argsAlloc(page_allocator);
-    defer process.argsFree(page_allocator, args);
+    const args = try std.process.argsAlloc(std.testing.allocator);
+    defer std.process.argsFree(std.testing.allocator, args);
 
     // Check for Arguments
     if (args.len < 2) {
@@ -17,9 +14,9 @@ pub fn main() !void {
     }
 
     var input = args[1]; // hash input from first argument
-    var output: [Blake3.digest_length]u8 = undefined; // this will be hash result
+    var output: [hash.Blake3.digest_length]u8 = undefined; // this will be hash result
 
-    Blake3.hash(input, &output, .{});
+    hash.Blake3.hash(input, &output, .{});
 
-    try stdout.print("{s}\n", .{fmtSliceHexLower(&output)});
+    try stdout.print("{s}\n", .{std.fmt.fmtSliceHexLower(&output)});
 }
