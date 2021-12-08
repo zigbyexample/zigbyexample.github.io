@@ -17,7 +17,7 @@ const Error = error{
 };
 
 // split arguments by white space
-fn getArgs(allocator: *mem.Allocator, cmd: []const u8) !?[]const []const u8 {
+fn getArgs(allocator: mem.Allocator, cmd: []const u8) !?[]const []const u8 {
     if (cmd.len == 0) {
         return null;
     }
