@@ -1,7 +1,7 @@
 const std = @import("std");
 const stdout = std.io.getStdOut().writer();
 
-fn generateWords(allocator: *std.mem.Allocator, word_len: usize, letter_len: usize) !void {
+fn generateWords(allocator: std.mem.Allocator, word_len: usize, letter_len: usize) !void {
     // Randomizer engine: generates a new random number
     const rand_engine = std.rand.DefaultPrng.init(@intCast(u64, std.time.milliTimestamp())).random(); // std.time.milliTimestamp() is the seed
 
