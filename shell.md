@@ -12,7 +12,7 @@ const exit = std.process.exit;
 
 const Error = error{
     CommandFailed,
-    UnkownCommand,
+    UnknownCommand,
     EmptyCommand,
 };
 
@@ -46,7 +46,7 @@ fn evaluateCmd(args: []const []const u8) !void {
         // execute command
         const res = std.ChildProcess.exec(.{ .allocator = std.heap.page_allocator, .argv = args }) catch |err| {
             switch (err) {
-                error.FileNotFound => return Error.UnkownCommand,
+                error.FileNotFound => return Error.UnknownCommand,
                 else => {
                     try stdout.writeAll(@errorName(err));
                     return Error.CommandFailed;
@@ -69,8 +69,8 @@ pub fn main() !void {
             const actual_line = mem.trim(u8, line, "\r\n ");
             if (try getArgs(std.testing.allocator, actual_line)) |args| {
                 evaluateCmd(args) catch |err| {
-                    if (err == Error.UnkownCommand) {
-                        stdout.print("Unkown Command `{s}`\n", .{actual_line}) catch {};
+                    if (err == Error.UnknownCommand) {
+                        stdout.print("Unknown Command `{s}`\n", .{actual_line}) catch {};
                     } else {
                         return err;
                     }
