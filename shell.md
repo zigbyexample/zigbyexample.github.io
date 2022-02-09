@@ -1,6 +1,6 @@
 # 6 - Shell
-In this program, we will create a Shell, that split the arguments and spawn a prcoess and either have built-in commands (`clear` and `exit`).
-you can also add some other shells features like history, autocomplete, git integration and etc.
+In this program, we will create a Shell, that split the arguments and spawn a process and either have built-in commands (`clear` and `exit`).
+You can also add some other shells features like history, autocomplete, git integration and etc.
 
 [shell.zig](code/shell.zig)
 ```zig
@@ -32,7 +32,7 @@ fn getArgs(allocator: mem.Allocator, cmd: []const u8) !?[]const []const u8 {
     return args.toOwnedSlice();
 }
 
-// evulate commands
+// evaluate commands
 fn evaluateCmd(args: []const []const u8) !void {
     if (args.len == 0) {
         return Error.EmptyCommand;
