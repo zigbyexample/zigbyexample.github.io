@@ -1,14 +1,20 @@
 #!/bin/bash
 set -e
 
-cp template/*.md .
+for f in template/*; do 
+    cp "$f" "$(basename $f).md"
+done
 
-for FILE in template/*.md;
+# cp template/* .
+
+for filename in *.md;
 do
-  filename="$(basename $FILE .md)"
-  echo '```zig' >> $filename.md
-  cat "code/$filename.zig" >> $filename.md
-  echo '```' >> $filename.md
+  if [[ "$filename" == 'README.md' ]]; then
+    continue
+  fi
+  echo '```zig' >> $filename
+  cat "code/$(basename $filename .md).zig" >> $filename
+  echo '```' >> $filename
 done
 
 echo Done!
