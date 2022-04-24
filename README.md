@@ -6,6 +6,6 @@ This is for all those people who love to learn by code, rather than trying to de
 - [List Directory](/list-directory.md)
 - [Subprocess](/subprocess.md)
 - [Hasher](/hasher.md)
-- [TCP Server](/tcp-server.md)
+- [TCP Connection](/tcp-connection.md)
 - [Word Generator](/word-generator.md)
 - [Shell](/shell.md)
