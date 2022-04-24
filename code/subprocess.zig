@@ -9,6 +9,7 @@ pub fn main() anyerror!void {
 
     std.debug.print("Running command: {s}\n", .{args});
     try process.spawn();
+
     const ret_val = try process.wait();
-    std.debug.print("The command returned: {s}\n", .{std.meta.tagName(ret_val)});
+    try std.testing.expectEqual(ret_val, .{ .Exited = 0 });
 }
