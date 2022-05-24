@@ -1,8 +1,5 @@
 # 4 - TCP Connection
 
-TCP is the most common internet protocol suite.
-We will create a TCP socket (using the built-in `StreamServer`), and listen on the address and accept all incoming client connections.
-
 [tcp-connection.zig](/code/tcp-connection.zig)
 
 ```zig

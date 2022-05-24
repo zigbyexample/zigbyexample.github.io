@@ -1,6 +1,6 @@
 # 1 - List Directory
 
-List all the files and folders present in the current directory or the given path in arguments.
+List all files and directories present in the current directory or the given path.
 
 [ls.zig](code/ls.zig)
 
