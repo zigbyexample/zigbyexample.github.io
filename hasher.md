@@ -3,6 +3,7 @@
 We’ll build a **Hasher**, that Hash's input argument by the Blake 3 algorithm.
 
 [hasher.zig](code/hasher.zig)
+
 ```zig
 const std = @import("std");
 const stdout = std.io.getStdOut().writer();
@@ -26,4 +27,5 @@ pub fn main() !void {
 
     try stdout.print("{s}\n", .{std.fmt.fmtSliceHexLower(&output)});
 }
+
 ```

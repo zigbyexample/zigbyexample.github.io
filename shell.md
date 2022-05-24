@@ -4,6 +4,7 @@ In this program, we will create a Shell, that split the arguments and spawn a pr
 You can also add some other shells features like history, autocomplete, git integration and etc.
 
 [shell.zig](code/shell.zig)
+
 ```zig
 const std = @import("std");
 const mem = std.mem;
@@ -80,4 +81,5 @@ pub fn main() !void {
         }
     }
 }
+
 ```

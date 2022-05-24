@@ -3,6 +3,7 @@
 List all the files and folders present in the current directory or the given path in arguments.
 
 [ls.zig](code/ls.zig)
+
 ```zig
 const std = @import("std");
 const stdout = std.io.getStdOut().writer();
@@ -18,4 +19,5 @@ pub fn main() !void {
         try stdout.print("{s}\n", .{path.name});
     }
 }
+
 ```

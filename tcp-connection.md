@@ -4,6 +4,7 @@ TCP is the most common internet protocol suite.
 We will create a TCP socket (using the built-in `StreamServer`), and listen on the address and accept all incoming client connections.
 
 [tcp-connection.zig](/code/tcp-connection.zig)
+
 ```zig
 const std = @import("std");
 const net = std.net;
@@ -75,4 +76,5 @@ pub fn main() !void {
     // accept incoming connection
     try server.accept();
 }
+
 ```
