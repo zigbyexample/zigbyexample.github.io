@@ -3,7 +3,7 @@
 A very simple Shell that split the arguments by whitespaces and spawn the process. It also extends built-in commands (`clear` and `exit`).
 you may try to make it smarter and add some modern shells features like history, autocomplete, git integration, etc.
 
-[shell.zig](code/shell.zig)
+[shell.zig](src/shell.zig)
 
 ```zig
 const std = @import("std");
