@@ -1,6 +1,6 @@
 # 6 - Shell
 
-a very simple Shell, that split the arguments by whitespaces and spawn the process. it also extends built-in commands (`clear` and `exit`).
+A very simple Shell that split the arguments by whitespaces and spawn the process. It also extends built-in commands (`clear` and `exit`).
 you may try to make it smarter and add some modern shells features like history, autocomplete, git integration, etc.
 
 [shell.zig](code/shell.zig)
@@ -34,7 +34,7 @@ fn getArgs(allocator: mem.Allocator, cmd: []const u8) !?[]const []const u8 {
     return args.toOwnedSlice();
 }
 
-// evulate commands
+// evaluate commands
 fn evaluateCmd(args: []const []const u8) !void {
     if (args.len == 0) {
         return Error.EmptyCommand;

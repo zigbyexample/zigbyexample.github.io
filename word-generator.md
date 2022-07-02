@@ -1,6 +1,6 @@
 # 5 - Word Generator
 
-generates random words by the given length (words, letters).
+Generates random words by the given length (words, letters).
 
 ```php
 $ ./wg 5 4 # <letters count> <words count>

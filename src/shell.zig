@@ -26,7 +26,7 @@ fn getArgs(allocator: mem.Allocator, cmd: []const u8) !?[]const []const u8 {
     return args.toOwnedSlice();
 }
 
-// evulate commands
+// evaluate commands
 fn evaluateCmd(args: []const []const u8) !void {
     if (args.len == 0) {
         return Error.EmptyCommand;
