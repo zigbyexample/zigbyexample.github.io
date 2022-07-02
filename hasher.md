@@ -2,7 +2,7 @@
 
 Takes the input and hash it with Blake 3 algorithm.
 
-[hasher.zig](code/hasher.zig)
+[hasher.zig](src/hasher.zig)
 
 ```zig
 const std = @import("std");

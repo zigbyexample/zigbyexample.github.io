@@ -1,6 +1,6 @@
 # 2 - Subprocess
 
-[subprocess.zig](code/subprocess.zig)
+[subprocess.zig](src/subprocess.zig)
 
 ```zig
 const std = @import("std");

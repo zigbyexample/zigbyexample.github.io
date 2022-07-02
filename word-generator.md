@@ -10,7 +10,7 @@ qeuom
 fated
 ```
 
-[word-generator.zig](/code/word-generator.zig)
+[word-generator.zig](src/word-generator.zig)
 
 ```zig
 const std = @import("std");

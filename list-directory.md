@@ -2,7 +2,7 @@
 
 List all files and directories present in the current directory or the given path.
 
-[ls.zig](code/ls.zig)
+[ls.zig](src/list-directory.zig)
 
 ```zig
 const std = @import("std");
