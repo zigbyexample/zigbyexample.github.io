@@ -5,6 +5,7 @@ pub fn build(b: *std.build.Builder) !void {
     const target = b.standardTargetOptions(.{});
     const mode = b.standardReleaseOptions();
 
+    const run_step = b.step("run", "Run the app");
     inline for (examples) |example| {
         const code_path = "src/" ++ example ++ ".zig";
 
@@ -14,21 +15,13 @@ pub fn build(b: *std.build.Builder) !void {
         exe.install();
 
         const run_cmd = exe.run();
-        run_cmd.step.dependOn(b.getInstallStep());
-        if (b.args) |args| {
-            run_cmd.addArgs(args);
-        }
-
-        const run_step = b.step("run-" ++ example, "Run the app");
         run_step.dependOn(&run_cmd.step);
     }
 
-    for (examples) |example| {
-        const code_name = try std.mem.concat(b.allocator, u8, &.{ example, ".zig" });
-        const template_in_name = try std.mem.concat(b.allocator, u8, &.{ example, ".md.in" });
-        const output_path = try std.mem.concat(b.allocator, u8, &.{ example, ".md" });
-        const code_path = try std.fs.path.join(b.allocator, &.{ "src", code_name });
-        const template_path = try std.fs.path.join(b.allocator, &.{ "template", template_in_name });
+    inline for (examples) |example| {
+        const output_path = try std.mem.concat(b.allocator, u8, &.{example ++ ".md"});
+        const code_path = try std.fs.path.join(b.allocator, &.{ "src", example ++ ".zig" });
+        const template_path = try std.fs.path.join(b.allocator, &.{ "template", example ++ ".md" });
 
         try cwd.copyFile(template_path, cwd, output_path, .{});
 
@@ -39,8 +32,6 @@ pub fn build(b: *std.build.Builder) !void {
             output_file.close();
             code_file.close();
             b.allocator.free(code_content);
-            b.allocator.free(code_name);
-            b.allocator.free(template_in_name);
             b.allocator.free(output_path);
             b.allocator.free(code_path);
             b.allocator.free(template_path);
@@ -58,10 +49,8 @@ pub fn build(b: *std.build.Builder) !void {
 }
 
 const examples = [_][]const u8{
-    "hasher",
-    "list-directory",
-    "shell",
+    "hashing",
+    "directory-listing",
     "subprocess",
     "tcp-connection",
-    "word-generator",
 };

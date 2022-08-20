@@ -1,3 +1,3 @@
-# 4 - TCP Connection
+# TCP Connection
 
 [tcp-connection.zig](/code/tcp-connection.zig)

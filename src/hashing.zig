@@ -3,9 +3,13 @@ const stdout = std.io.getStdOut().writer();
 const hash = std.crypto.hash;
 
 pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
+
     // Get Arguments
-    const args = try std.process.argsAlloc(std.testing.allocator);
-    defer std.process.argsFree(std.testing.allocator, args);
+    const args = try std.process.argsAlloc(allocator);
+    defer std.process.argsFree(allocator, args);
 
     // Check for Arguments
     if (args.len < 2) {

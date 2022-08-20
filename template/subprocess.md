@@ -1,3 +1,3 @@
-# 2 - Subprocess
+# Subprocess
 
 [subprocess.zig](code/subprocess.zig)

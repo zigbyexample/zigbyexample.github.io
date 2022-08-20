@@ -1,4 +1,4 @@
-# 3 - Hasher
+# Hashing
 
 takes the input and hash it with Blake 3 algorithm.
 
