@@ -1,4 +1,10 @@
-# Zig by Example
+---
+layout: default
+title: Zig by Example
+nav_order: 1
+description: "Learn How to use Zig's Standard Library, by simple and small examples."
+permalink: /
+---
 
 Learn How to use Zig's Standard Library, by simple and small examples.
 It is not a complete explanation but rather just plain good code with comments.
