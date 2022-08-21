@@ -43,5 +43,6 @@ const examples = [_][]const u8{
     "spawn-subprocess",
     "hashing",
     "tcp-connection",
+    "mutex",
     "atomic",
 };
