@@ -1,6 +1,6 @@
 # TCP Connection
 
-[tcp-connection.zig](/code/tcp-connection.zig)
+[tcp-connection.zig](src/tcp-connection.zig)
 
 ```zig
 const std = @import("std");
@@ -16,9 +16,8 @@ const Server = struct {
     pub fn init() !Server {
         const address = net.Address.initIp4([4]u8{ 127, 0, 0, 1 }, 8080);
 
-        // more information about `reuse_address`: http://unixguide.net/network/socketfaq/4.5.shtml
+        // http://unixguide.net/network/socketfaq/4.5.shtml
         var server = net.StreamServer.init(.{ .reuse_address = true });
-
         // start listening at 127.0.0.1:8080
         try server.listen(address);
 
@@ -36,7 +35,7 @@ const Server = struct {
 
         // initialize a buffer to keep the client message
         var buf: [1024]u8 = undefined;
-        var msg_size = try conn.stream.read(buf[0..]);
+        const msg_size = try conn.stream.read(buf[0..]);
 
         // assert client message is 'Hello'
         try testing.expectEqualSlices(u8, client_msg, buf[0..msg_size]);
@@ -56,7 +55,7 @@ fn sendMsgToServer(server_address: net.Address) !void {
 
     // initialize a buffer to keep the server response
     var buf: [1024]u8 = undefined;
-    var resp_size = try conn.read(buf[0..]);
+    const resp_size = try conn.read(buf[0..]);
 
     // assert server response is 'Good Bye'
     try testing.expectEqualSlices(u8, server_msg, buf[0..resp_size]);
