@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Read/Write File
-nav_order: 1
+nav_order: 2
 permalink: /read_write_file
 ---
 
-[read_write_file.zig](src/read_write_file.zig)
+[read-write-file.zig](src/read-write-file.zig)
 
 ```zig
 const std = @import("std");

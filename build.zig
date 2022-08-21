@@ -37,6 +37,7 @@ pub fn build(b: *std.build.Builder) !void {
 }
 
 const examples = [_][]const u8{
+    "command-line-arguments",
     "read-write-file",
     "directory-listing",
     "spawn-subprocess",
