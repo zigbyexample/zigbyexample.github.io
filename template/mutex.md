@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Mutex
-nav_order: 7
+nav_order: 8
 permalink: /mutex
 ---
 

@@ -3,12 +3,31 @@ const cwd = std.fs.cwd();
 
 pub fn build(b: *std.build.Builder) !void {
     const mode = b.standardReleaseOptions();
+    const target = b.standardTargetOptions(.{});
 
     const test_step = b.step("test", "Test code exmaples");
-    inline for (examples) |example| {
-        const example_test = b.addTest("src/" ++ example ++ ".zig");
-        example_test.setBuildMode(mode);
-        test_step.dependOn(&example_test.step);
+    var code_buf: [2048]u8 = undefined;
+    for (examples) |example| {
+        if (std.mem.eql(u8, example, "read-input")) continue;
+
+        const contact_code_example = try std.mem.concat(b.allocator, u8, &.{ example, ".zig" });
+        const code_path = try std.fs.path.join(b.allocator, &.{ "src/", contact_code_example });
+        std.debug.print("{s}\n", .{code_path});
+        const example_file = try cwd.openFile(code_path, .{ .mode = .read_only });
+        const read = try example_file.readAll(&code_buf);
+        const is_executable = std.mem.containsAtLeast(u8, code_buf[0..read], 1, "pub fn main");
+
+        if (is_executable) {
+            const example_exe = b.addExecutable(example, code_path);
+            example_exe.setBuildMode(mode);
+            example_exe.setTarget(target);
+            const run_cmd = example_exe.run();
+            test_step.dependOn(&run_cmd.step);
+        } else {
+            const example_test = b.addTest(code_path);
+            example_test.setBuildMode(mode);
+            test_step.dependOn(&example_test.step);
+        }
     }
 
     inline for (examples) |example| {
@@ -38,6 +57,7 @@ pub fn build(b: *std.build.Builder) !void {
 
 const examples = [_][]const u8{
     "command-line-arguments",
+    "read-input",
     "read-write-file",
     "directory-listing",
     "spawn-subprocess",
