@@ -1,7 +1,7 @@
 const std = @import("std");
 const hash = std.crypto.hash;
 
-pub fn main() !void {
+test {
     const input = "hello";
     var output: [hash.Blake3.digest_length]u8 = undefined;
 

@@ -1,6 +1,11 @@
-# Hashing
+---
+layout: default
+title: Hashing
+nav_order: 4
+permalink: /hashing
+---
 
-hash `hello` it with Blake 3 algorithm.
+hash `hello` with Blake 3 algorithm.
 
 [hasher.zig](src/hasher.zig)
 
@@ -8,7 +13,7 @@ hash `hello` it with Blake 3 algorithm.
 const std = @import("std");
 const hash = std.crypto.hash;
 
-pub fn main() !void {
+test {
     const input = "hello";
     var output: [hash.Blake3.digest_length]u8 = undefined;
 

@@ -1,4 +1,9 @@
-# TCP Connection
+---
+layout: default
+title: TCP Connection
+nav_order: 5
+permalink: /tcp_connection
+---
 
 [tcp-connection.zig](src/tcp-connection.zig)
 
@@ -61,7 +66,7 @@ fn sendMsgToServer(server_address: net.Address) !void {
     try testing.expectEqualSlices(u8, server_msg, buf[0..resp_size]);
 }
 
-pub fn main() !void {
+test {
     var server = try Server.init();
     defer server.deinit();
 

@@ -1,6 +1,6 @@
 const std = @import("std");
 
-pub fn main() !void {
+test {
     const dir = try std.fs.cwd().openIterableDir(".", .{});
     var iterator = dir.iterate();
 

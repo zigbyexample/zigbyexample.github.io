@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Zig by Example
-nav_order: 1
+nav_order: -1
 description: "Learn How to use Zig's Standard Library, by simple and small examples."
 permalink: /
 ---

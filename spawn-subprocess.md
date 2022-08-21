@@ -1,18 +1,19 @@
-# Subprocess
+---
+layout: default
+title: Spawning Subprocess
+nav_order: 3
+permalink: /spawn_subprocess
+---
 
 [subprocess.zig](src/subprocess.zig)
 
 ```zig
 const std = @import("std");
 
-pub fn main() anyerror!void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
-
+test {
     const args = [_][]const u8{ "ls", "-al" };
 
-    var process = std.ChildProcess.init(&args, allocator);
+    var process = std.ChildProcess.init(&args, std.testing.allocator);
     std.debug.print("Running command: {s}\n", .{args});
     try process.spawn();
 

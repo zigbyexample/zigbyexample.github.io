@@ -56,7 +56,7 @@ fn sendMsgToServer(server_address: net.Address) !void {
     try testing.expectEqualSlices(u8, server_msg, buf[0..resp_size]);
 }
 
-pub fn main() !void {
+test {
     var server = try Server.init();
     defer server.deinit();
 

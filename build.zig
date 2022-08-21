@@ -2,40 +2,28 @@ const std = @import("std");
 const cwd = std.fs.cwd();
 
 pub fn build(b: *std.build.Builder) !void {
-    const target = b.standardTargetOptions(.{});
     const mode = b.standardReleaseOptions();
 
-    const run_step = b.step("run", "Run the app");
+    const test_step = b.step("test", "Test code exmaples");
     inline for (examples) |example| {
-        const code_path = "src/" ++ example ++ ".zig";
-
-        const exe = b.addExecutable(example, code_path);
-        exe.setTarget(target);
-        exe.setBuildMode(mode);
-        exe.install();
-
-        const run_cmd = exe.run();
-        run_step.dependOn(&run_cmd.step);
+        const example_test = b.addTest("src/" ++ example ++ ".zig");
+        example_test.setBuildMode(mode);
+        test_step.dependOn(&example_test.step);
     }
 
     inline for (examples) |example| {
-        const output_path = try std.mem.concat(b.allocator, u8, &.{example ++ ".md"});
-        const code_path = try std.fs.path.join(b.allocator, &.{ "src", example ++ ".zig" });
-        const template_path = try std.fs.path.join(b.allocator, &.{ "template", example ++ ".md" });
+        const output_path = example ++ ".md";
+        const code_path = "src/" ++ example ++ ".zig";
+        const template_path = "template/" ++ example ++ ".md";
 
         try cwd.copyFile(template_path, cwd, output_path, .{});
 
         var output_file = try cwd.openFile(output_path, .{ .mode = .write_only });
         var code_file = try cwd.openFile(code_path, .{ .mode = .read_only });
+        defer output_file.close();
+        defer code_file.close();
+
         const code_content = try code_file.readToEndAlloc(b.allocator, 1024 * 1024);
-        defer {
-            output_file.close();
-            code_file.close();
-            b.allocator.free(code_content);
-            b.allocator.free(output_path);
-            b.allocator.free(code_path);
-            b.allocator.free(template_path);
-        }
 
         try output_file.seekFromEnd(0);
         try output_file.writer().print(
@@ -49,8 +37,9 @@ pub fn build(b: *std.build.Builder) !void {
 }
 
 const examples = [_][]const u8{
-    "hashing",
+    "read-write-file",
     "directory-listing",
-    "subprocess",
+    "spawn-subprocess",
+    "hashing",
     "tcp-connection",
 };
