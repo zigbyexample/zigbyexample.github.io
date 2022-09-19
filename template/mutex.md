@@ -5,4 +5,4 @@ nav_order: 8
 permalink: /mutex
 ---
 
-[atomic.zig](src/mutex.zig)
+[mutex.zig](src/mutex.zig)
