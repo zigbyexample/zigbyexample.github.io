@@ -60,7 +60,7 @@ test {
     var server = try Server.init();
     defer server.deinit();
 
-    // spawn a new client therad to send `Hello`
+    // spawn a new client thread to send `Hello`
     const client_thread = try std.Thread.spawn(.{}, sendMsgToServer, .{server.stream_server.listen_address});
     defer client_thread.join();
 
