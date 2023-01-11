@@ -50,7 +50,7 @@ const examples = &[_]Example{
     .{ .name = "command-line-arguments" },
     .{ .name = "directory-listing" },
     .{ .name = "hashing" },
-    .{ .name = "http-client", .unix_only = true }, // TODO
+    .{ .name = "http-client", .build_only = true, .unix_only = true }, // TODO
     .{ .name = "json" },
     .{ .name = "mutex" },
     .{ .name = "read-input", .build_only = true },

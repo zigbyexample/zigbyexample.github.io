@@ -1,7 +1,7 @@
 remote_theme: zig-by-example/just-the-docs
 logo: /assets/logo.png
 title: Zig By Example
-description: Learn How to use Zig's Standard Library, by simple and small examples.
+description: Learn How to use Zig's Standard Library, by small examples.
 color_scheme: zig
 search_enabled: false
 
