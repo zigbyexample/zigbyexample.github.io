@@ -1,10 +1,9 @@
 const std = @import("std");
-const cwd = std.fs.cwd();
 
 test {
     const value = "hello";
 
-    var my_file = try cwd.createFile("my_file.txt", .{ .read = true });
+    var my_file = try std.fs.cwd().createFile("file.txt", .{ .read = true });
     defer my_file.close();
 
     _ = try my_file.write(value);

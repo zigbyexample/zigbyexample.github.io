@@ -1,29 +1,34 @@
 const std = @import("std");
-const Thread = std.Thread;
 
 const ThreadSafeCounter = struct {
-    lock: Thread.Mutex,
+    lock: std.Thread.Mutex,
     count: usize,
 
-    pub fn increase(self: *ThreadSafeCounter) void {
-        self.lock.lock();
-        defer self.lock.unlock();
+    pub fn increase(self: *ThreadSafeCounter, n: u32) void {
+        var i: u32 = 0;
+        while (i < n) : (i += 1) {
+            self.lock.lock();
+            defer self.lock.unlock();
 
-        self.count += 1;
+            self.count += 1;
+        }
     }
 };
 
 test {
+    var threads: [3]std.Thread = undefined;
     var counter = ThreadSafeCounter{
         .lock = .{},
         .count = 0,
     };
 
-    var i: usize = 0;
-    while (i < 50) : (i += 1) {
-        const thread = try std.Thread.spawn(.{}, ThreadSafeCounter.increase, .{&counter});
-        thread.join();
+    for (threads) |*thrd| {
+        thrd.* = try std.Thread.spawn(.{}, ThreadSafeCounter.increase, .{ &counter, 1000 });
     }
 
-    try std.testing.expect(counter.count == 50);
+    for (threads) |thrd| {
+        thrd.join();
+    }
+
+    try std.testing.expect(counter.count == 3_000);
 }

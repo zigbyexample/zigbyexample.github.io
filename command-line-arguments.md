@@ -10,7 +10,7 @@ permalink: /command_line_arguments
 ```zig
 const std = @import("std");
 
-pub fn main() !void {
+test {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
@@ -18,7 +18,7 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
-    std.debug.print("Arguments: {s}\n", .{args});
+    std.debug.print("Argumnets: {s}\n", .{args});
 }
 
 ```

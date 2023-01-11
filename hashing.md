@@ -11,13 +11,13 @@ hash `hello` with Blake 3 algorithm.
 
 ```zig
 const std = @import("std");
-const hash = std.crypto.hash;
+const Blake3 = std.crypto.hash.Blake3;
 
 test {
     const input = "hello";
-    var output: [hash.Blake3.digest_length]u8 = undefined;
+    var output: [Blake3.digest_length]u8 = undefined;
 
-    hash.Blake3.hash(input, &output, .{});
+    Blake3.hash(input, &output, .{});
 
     std.debug.print("{s}\n", .{std.fmt.fmtSliceHexLower(&output)});
 }

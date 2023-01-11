@@ -9,23 +9,27 @@ permalink: /atomics
 
 ```zig
 const std = @import("std");
-
-var num = std.atomic.Atomic(u32).init(0);
+const AtomicInt = std.atomic.Atomic(u32);
 
 test {
-    var i: usize = 0;
-    while (i < 50) : (i += 1) {
-        const thread = try std.Thread.spawn(.{}, updateNum, .{});
-        thread.join();
+    var threads: [50]std.Thread = undefined;
+    var data = AtomicInt.init(0);
+
+    for (threads) |*thrd| {
+        thrd.* = try std.Thread.spawn(.{}, updateData, .{&data});
     }
 
-    try std.testing.expect(num.loadUnchecked() == 50000);
+    for (threads) |thrd| {
+        thrd.join();
+    }
+
+    try std.testing.expect(data.loadUnchecked() == 50_000);
 }
 
-fn updateNum() void {
+fn updateData(data: *AtomicInt) void {
     var i: usize = 0;
     while (i < 1000) : (i += 1) {
-        _ = num.fetchAdd(1, .Acquire);
+        _ = data.fetchAdd(1, .Release);
     }
 }
 

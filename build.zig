@@ -1,39 +1,29 @@
 const std = @import("std");
-const cwd = std.fs.cwd();
+const builtin = @import("builtin");
 
 pub fn build(b: *std.build.Builder) !void {
+    const cwd = std.fs.cwd();
     const mode = b.standardReleaseOptions();
-    const target = b.standardTargetOptions(.{});
 
     const test_step = b.step("test", "Test code exmaples");
-    var code_buf: [2048]u8 = undefined;
     for (examples) |example| {
-        if (std.mem.eql(u8, example, "read-input")) continue;
+        if (builtin.os.tag == .windows and example.unix_only) continue;
 
-        const contact_code_example = try std.mem.concat(b.allocator, u8, &.{ example, ".zig" });
+        const contact_code_example = try std.mem.concat(b.allocator, u8, &.{ example.name, ".zig" });
         const code_path = try std.fs.path.join(b.allocator, &.{ "src/", contact_code_example });
-        std.debug.print("{s}\n", .{code_path});
-        const example_file = try cwd.openFile(code_path, .{ .mode = .read_only });
-        const read = try example_file.readAll(&code_buf);
-        const is_executable = std.mem.containsAtLeast(u8, code_buf[0..read], 1, "pub fn main");
 
-        if (is_executable) {
-            const example_exe = b.addExecutable(example, code_path);
-            example_exe.setBuildMode(mode);
-            example_exe.setTarget(target);
-            const run_cmd = example_exe.run();
-            test_step.dependOn(&run_cmd.step);
-        } else {
-            const example_test = b.addTest(code_path);
-            example_test.setBuildMode(mode);
-            test_step.dependOn(&example_test.step);
-        }
+        const example_test = if (example.build_only)
+            b.addTestExe(example.name, code_path)
+        else
+            b.addTest(code_path);
+        example_test.setBuildMode(mode);
+        test_step.dependOn(&example_test.step);
     }
 
     inline for (examples) |example| {
-        const output_path = example ++ ".md";
-        const code_path = "src/" ++ example ++ ".zig";
-        const template_path = "template/" ++ example ++ ".md";
+        const output_path = example.name ++ ".md";
+        const code_path = "src/" ++ example.name ++ ".zig";
+        const template_path = "template/" ++ example.name ++ ".md";
 
         try cwd.copyFile(template_path, cwd, output_path, .{});
 
@@ -55,14 +45,20 @@ pub fn build(b: *std.build.Builder) !void {
     }
 }
 
-const examples = [_][]const u8{
-    "command-line-arguments",
-    "read-input",
-    "read-write-file",
-    "directory-listing",
-    "spawn-subprocess",
-    "hashing",
-    "tcp-connection",
-    "mutex",
-    "atomic",
+const examples = &[_]Example{
+    .{ .name = "command-line-arguments" },
+    .{ .name = "read-input", .build_only = true },
+    .{ .name = "read-write-file" },
+    .{ .name = "directory-listing" },
+    .{ .name = "spawn-subprocess", .unix_only = true },
+    .{ .name = "hashing" },
+    .{ .name = "tcp-connection" },
+    .{ .name = "mutex" },
+    .{ .name = "atomic" },
+};
+
+const Example = struct {
+    name: []const u8,
+    build_only: bool = false,
+    unix_only: bool = false,
 };
