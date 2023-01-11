@@ -46,15 +46,16 @@ pub fn build(b: *std.build.Builder) !void {
 }
 
 const examples = &[_]Example{
+    .{ .name = "atomic" },
     .{ .name = "command-line-arguments" },
+    .{ .name = "directory-listing" },
+    .{ .name = "hashing" },
+    .{ .name = "json" },
+    .{ .name = "mutex" },
     .{ .name = "read-input", .build_only = true },
     .{ .name = "read-write-file" },
-    .{ .name = "directory-listing" },
     .{ .name = "spawn-subprocess", .unix_only = true },
-    .{ .name = "hashing" },
     .{ .name = "tcp-connection" },
-    .{ .name = "mutex" },
-    .{ .name = "atomic" },
 };
 
 const Example = struct {
