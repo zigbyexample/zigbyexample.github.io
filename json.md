@@ -9,8 +9,8 @@ permalink: /json
 
 ```zig
 const std = @import("std");
-const json = std.json;
-const payload =
+
+const my_json =
     \\{
     \\    "vals": {
     \\        "testing": 1,
@@ -19,21 +19,22 @@ const payload =
     \\    "uptime": 9999
     \\}
 ;
+
 const Config = struct {
-    vals: struct { testing: u8, production: u8 },
+    vals: struct {
+        testing: u8,
+        production: u8,
+    },
     uptime: u64,
 };
-const config = x: {
-    var stream = json.TokenStream.init(payload);
-    const res = json.parse(Config, &stream, .{});
-    // Assert no error can occur since we are
-    // parsing this JSON at comptime!
-    break :x res catch unreachable;
-};
-pub fn main() !void {
-    if (config.vals.production > 50) {
-        @compileError("only up to 50 supported");
-    }
-    std.log.info("up={d}", .{config.uptime});
+
+test {
+    var tok_stream = std.json.TokenStream.init(my_json);
+    const res = try std.json.parse(Config, &tok_stream, .{});
+
+    try std.testing.expect(res.vals.testing == 1);
+    try std.testing.expect(res.vals.production == 42);
+    try std.testing.expect(res.uptime == 9999);
 }
+
 ```
