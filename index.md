@@ -14,7 +14,7 @@ This is for all those people who love to learn by code, rather than trying to de
 -   [Command-Line Arguments](https://zigbyexample.github.io/command_line_arguments)
 -   [Directory Listing](https://zigbyexample.github.io/directory_listing)
 -   [Hashing](https://zigbyexample.github.io/hashing)
--   [HTTP Clinet](https://zigbyexample.github.io/http-client)
+-   [HTTP Client](https://zigbyexample.github.io/http-client)
 -   [JSON](https://zigbyexample.github.io/json)
 -   [Mutex](https://zigbyexample.github.io/mutex)
 -   [Reading input](https://zigbyexample.github.io/read_input)
