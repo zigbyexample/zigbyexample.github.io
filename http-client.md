@@ -10,11 +10,11 @@ permalink: /http-client
 ```zig
 const std = @import("std");
 
-const uri = std.Uri.parse("https://ziglang.org") catch unreachable;
+const uri = std.Uri.parse("https://ziglang.org/") catch unreachable;
 
 test {
-    var client = std.http.Client{ .allocator = std.testing.allocator };
-    defer client.deinit(std.testing.allocator);
+    var client: std.http.Client = .{ .allocator = std.testing.allocator };
+    defer client.deinit();
 
     var req = try client.request(uri, .{}, .{});
     defer req.deinit();
