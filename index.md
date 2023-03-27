@@ -11,6 +11,7 @@ It is not a complete explanation but rather just plain good code.
 This is for all those people who love to learn by code, rather than trying to decipher endless pages of documention.
 
 -   [Atomics](https://zigbyexample.github.io/atomics)
+-   [Compressing Data](https://zigbyexample.github.io/compressing_data)
 -   [Command-Line Arguments](https://zigbyexample.github.io/command_line_arguments)
 -   [Directory Listing](https://zigbyexample.github.io/directory_listing)
 -   [Hashing](https://zigbyexample.github.io/hashing)
