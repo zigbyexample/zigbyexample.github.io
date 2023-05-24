@@ -5,30 +5,22 @@ pub fn build(b: *std.build.Builder) !void {
     const cwd = std.fs.cwd();
     const optimize = b.standardOptimizeOption(.{});
 
-    const test_step = b.step("test", "Test code exmaples");
     for (examples) |example| {
-        if (builtin.os.tag == .windows and example.unix_only) continue;
-
-        const contact_code_example = try std.mem.concat(b.allocator, u8, &.{ example.name, ".zig" });
+        const contact_code_example = try std.mem.concat(b.allocator, u8, &.{ example, ".zig" });
         const code_path = try std.fs.path.join(b.allocator, &.{ "src/", contact_code_example });
 
         const example_test = b.addTest(.{
-            .name = example.name,
+            .name = example,
             .root_source_file = .{ .path = code_path },
             .optimize = optimize,
         });
-
-        if (example.build_only) {
-            test_step.dependOn(&example_test.run().step);
-        } else {
-            test_step.dependOn(&example_test.step);
-        }
+        b.getInstallStep().dependOn(&example_test.step);
     }
 
     inline for (examples) |example| {
-        const output_path = example.name ++ ".md";
-        const code_path = "src/" ++ example.name ++ ".zig";
-        const template_path = "template/" ++ example.name ++ ".md";
+        const output_path = example ++ ".md";
+        const code_path = "src/" ++ example ++ ".zig";
+        const template_path = "template/" ++ example ++ ".md";
 
         try cwd.copyFile(template_path, cwd, output_path, .{});
 
@@ -50,23 +42,17 @@ pub fn build(b: *std.build.Builder) !void {
     }
 }
 
-const examples = &[_]Example{
-    .{ .name = "atomic" },
-    .{ .name = "compressing-data" },
-    .{ .name = "command-line-arguments" },
-    .{ .name = "directory-listing" },
-    .{ .name = "hashing" },
-    .{ .name = "http-client", .build_only = true, .unix_only = true }, // TODO
-    .{ .name = "json" },
-    .{ .name = "mutex" },
-    .{ .name = "read-input", .build_only = true },
-    .{ .name = "read-write-file" },
-    .{ .name = "spawn-subprocess", .unix_only = true },
-    .{ .name = "tcp-connection" },
-};
-
-const Example = struct {
-    name: []const u8,
-    build_only: bool = false,
-    unix_only: bool = false,
+const examples = &[_][]const u8{
+    "atomic",
+    "compressing-data",
+    "command-line-arguments",
+    "directory-listing",
+    "hashing",
+    "http-client",
+    "json",
+    "mutex",
+    "read-input",
+    "read-write-file",
+    "spawn-subprocess",
+    "tcp-connection",
 };

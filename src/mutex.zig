@@ -22,7 +22,7 @@ test {
         .count = 0,
     };
 
-    for (threads) |*thrd| {
+    for (&threads) |*thrd| {
         thrd.* = try std.Thread.spawn(.{}, ThreadSafeCounter.increase, .{ &counter, 1000 });
     }
 

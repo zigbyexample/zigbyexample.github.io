@@ -15,7 +15,7 @@ test {
     var threads: [50]std.Thread = undefined;
     var data = AtomicInt.init(0);
 
-    for (threads) |*thrd| {
+    for (&threads) |*thrd| {
         thrd.* = try std.Thread.spawn(.{}, updateData, .{&data});
     }
 

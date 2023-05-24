@@ -29,12 +29,11 @@ const Config = struct {
 };
 
 test {
-    var tok_stream = std.json.TokenStream.init(my_json);
-    const res = try std.json.parse(Config, &tok_stream, .{});
+    const config = try std.json.parseFromSlice(Config, std.testing.allocator, my_json, .{});
 
-    try std.testing.expect(res.vals.testing == 1);
-    try std.testing.expect(res.vals.production == 42);
-    try std.testing.expect(res.uptime == 9999);
+    try std.testing.expect(config.vals.testing == 1);
+    try std.testing.expect(config.vals.production == 42);
+    try std.testing.expect(config.uptime == 9999);
 }
 
 ```

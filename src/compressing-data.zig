@@ -1,14 +1,14 @@
 const std = @import("std");
 
 test {
-    const data = "�!drandom+J�K��UHI,IT(-NMQ��S��LWH�TH�H�-�I�e��#";
-    var fbs = std.io.fixedBufferStream(data);
+    const file = try std.fs.cwd().openFile("file.gzip", .{});
+    defer file.close();
 
-    var gzip_stream = try std.gzip.decompress(std.testing.allocator, fbs.reader());
+    var gzip_stream = try std.compress.gzip.decompress(std.testing.allocator, file.reader());
     defer gzip_stream.deinit();
 
     const result = try gzip_stream.reader().readAllAlloc(std.testing.allocator, std.math.maxInt(usize));
     defer std.testing.allocator.free(result);
 
-    std.testing.expectEqualStrings("some random data used in zig by example!", result);
+    try std.testing.expectEqualStrings("zig is cool!", result);
 }
