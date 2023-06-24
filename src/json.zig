@@ -21,7 +21,7 @@ const Config = struct {
 test {
     const config = try std.json.parseFromSlice(Config, std.testing.allocator, my_json, .{});
 
-    try std.testing.expect(config.vals.testing == 1);
-    try std.testing.expect(config.vals.production == 42);
-    try std.testing.expect(config.uptime == 9999);
+    try std.testing.expect(config.value.vals.testing == 1);
+    try std.testing.expect(config.value.vals.production == 42);
+    try std.testing.expect(config.value.uptime == 9999);
 }
