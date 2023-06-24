@@ -30,6 +30,7 @@ const Config = struct {
 
 test {
     const config = try std.json.parseFromSlice(Config, std.testing.allocator, my_json, .{});
+    defer config.deinit();
 
     try std.testing.expect(config.value.vals.testing == 1);
     try std.testing.expect(config.value.vals.production == 42);
