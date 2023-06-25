@@ -22,7 +22,7 @@ test {
     const config = try std.json.parseFromSlice(Config, std.testing.allocator, my_json, .{});
     defer config.deinit();
 
-    try std.testing.expect(config.value.vals.testing == 1);
-    try std.testing.expect(config.value.vals.production == 42);
-    try std.testing.expect(config.value.uptime == 9999);
+    try std.testing.expectEqual(@as(u8, 1), config.value.vals.testing);
+    try std.testing.expectEqual(@as(u8, 42), config.value.vals.production);
+    try std.testing.expectEqual(@as(u64, 9_999), config.value.uptime);
 }
