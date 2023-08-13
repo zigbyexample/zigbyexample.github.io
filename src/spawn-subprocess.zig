@@ -3,7 +3,7 @@ const std = @import("std");
 test {
     const args = [_][]const u8{ "ls", "-al" };
 
-    var process = std.ChildProcess.init(&args, std.testing.allocator);
+    var process = std.process.Child.init(&args, std.testing.allocator);
     std.debug.print("Running command: {s}\n", .{args});
     try process.spawn();
 
