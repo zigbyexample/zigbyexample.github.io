@@ -5,7 +5,7 @@ nav_order: 2
 permalink: /read_input
 ---
 
-[read-input.zig](src/coread-input.zig)
+[read-input.zig](src/read-input.zig)
 
 ```zig
 const std = @import("std");
@@ -18,8 +18,10 @@ test {
     const stdin = std.io.getStdIn();
 
     std.debug.print("input: ", .{});
-    const input = try stdin.reader().readUntilDelimiterAlloc(allocator, '\n', 1024);
-    defer allocator.free(input);
+    var input = std.ArrayList(u8).init(allocator);
+    defer input.deinit();
+
+    try stdin.reader().streamUntilDelimiter(input.writer(), '\n', 1024);
 
     std.debug.print("value: {s}\n", .{input});
 }
