@@ -8,8 +8,11 @@ test {
     const stdin = std.io.getStdIn();
 
     std.debug.print("input: ", .{});
-    const input = try stdin.reader().readUntilDelimiterAlloc(allocator, '\n', 1024);
-    defer allocator.free(input);
 
-    std.debug.print("value: {s}\n", .{input});
+    var input = std.ArrayList(u8).init(allocator);
+    defer input.deinit();
+
+    try stdin.reader().streamUntilDelimiter(input.writer(), '\n', 1024);
+
+    std.debug.print("value: {s}\n", .{input.items});
 }
