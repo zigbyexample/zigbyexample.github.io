@@ -23,7 +23,7 @@ test {
 
     try stdin.reader().streamUntilDelimiter(input.writer(), '\n', 1024);
 
-    std.debug.print("value: {s}\n", .{input});
+    std.debug.print("value: {s}\n", .{input.items});
 }
 
 ```
