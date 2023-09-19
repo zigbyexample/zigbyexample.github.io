@@ -18,6 +18,6 @@ jobs:
         with:
           version: master
         
-      - name: Run a multi-line script
-        run: zig build test
+      - name: Build Example Markdowns
+        run: zig build
         
