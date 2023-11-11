@@ -1,8 +1,3 @@
-# Zig by Example
+# Zig by Example [DEPRECATED]
 
-Learn How to use Zig's Standard Library, by small examples.
-It is not a complete explanation but rather just plain good code.
-
-## Zig version
-
-this project follows zig master
+Please see [ziglearn.org](https://ziglearn.org) for a more complete guide

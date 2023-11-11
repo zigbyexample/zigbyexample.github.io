@@ -1,9 +1,9 @@
 remote_theme: zig-by-example/just-the-docs
 logo: /assets/logo.png
-title: Zig By Example
-description: Learn How to use Zig's Standard Library, by small examples.
+title: Zig By Example [DEPRECATED]
+description: Please see [ziglearn.org](https://ziglearn.org) for a more complete guide
 color_scheme: zig
 search_enabled: false
 
 permalink: pretty
-exclude: ["template/", ".vscode/", "README.md"]
+exclude: [".vscode/", "README.md"]
